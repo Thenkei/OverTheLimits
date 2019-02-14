@@ -1,0 +1,9 @@
+{
+  "name": "overthelimits",
+  "version": "1.0.0",
+  "description": "Neural network AI for UnderTheLimits",
+  "main": "index.js",
+  "repository": "https://github.com/Thenkei/OverTheLimits.git",
+  "author": "Thenkei <morganperre@gmail.com>",
+  "license": "GPL-3.0"
+}
