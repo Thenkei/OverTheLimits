@@ -5,5 +5,9 @@
   "main": "index.js",
   "repository": "https://github.com/Thenkei/OverTheLimits.git",
   "author": "Thenkei <morganperre@gmail.com>",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^0.3.0",
+    "sqlite3": "^4.0.6"
+  }
 }
