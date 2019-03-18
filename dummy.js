@@ -53,7 +53,15 @@ if(args.length === 0) {
 }
 
 createPlayer('DUMMY_BOT', (player) => { bot = player });
-updateChannel((channel) => { console.log(channel); party = channel; bot = channel.players.find(p => bot.id === bot.id); console.log('[Dummy] Bot connected to channel', channel.name);});
+
+function updateBot(inChannel) {
+  console.log(inChannel);
+  party = inChannel;
+  bot = inChannel.players.find(p => bot.id === bot.id);
+  console.log('[Dummy] Bot connected to channel', inChannel.name);
+}
+
+updateChannel((channel) => updateBot(channel));
 
 setTimeout(function(){
     gotoChannel(parseInt(args[0]));
