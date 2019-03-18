@@ -81,7 +81,7 @@ function updateBot(inChannel) {
           selectedAnswer = Math.floor((Math.random() * 10));
           console.log(bot.hand)
           answer = [];
-          answer.push(bot.hand[selectedAnswer].id)
+          answer.push(selectedAnswer)
           selectedAnswers(answer);
           console.log("Selected hand : " + bot.hand[selectedAnswer].text);
           sendMessage("Ok pour moi; j'ai selectionné la réponse " + selectedAnswer);
