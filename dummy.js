@@ -12,10 +12,8 @@ function createPlayer(playerName, cb) {
   addListener('playerCreated', lobbyResponse => cb(lobbyResponse.player));
 }
 
-function updateLobby(cb) {
-  addListener('updateLobby', (lobbyResponse) => {
-    cb(lobbyResponse.lobby);
-  });
+function updateChannel(cb) {
+  addListener('updateChannel', channelResponse => cb(channelResponse.channel));
 }
 
 function gotoChannel(channelId) {
@@ -46,4 +44,17 @@ function success(cb) {
 // CODE HERE
 
 let bot;
+let party;
+const args = process.argv.slice(2);
+
+if(args.length === 0) {
+  console.log('[Dummy] Give me the room id please');
+  return;
+}
+
 createPlayer('DUMMY_BOT', (player) => { bot = player });
+updateChannel((channel) => { console.log(channel); party = channel; bot = channel.players.find(p => bot.id === bot.id); console.log('[Dummy] Bot connected to channel', channel.name);});
+
+setTimeout(function(){
+    gotoChannel(parseInt(args[0]));
+}, 500);
