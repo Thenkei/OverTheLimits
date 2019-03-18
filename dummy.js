@@ -52,15 +52,15 @@ if(args.length === 0) {
   return;
 }
 
-createPlayer('DUMMY_BOT', (player) => { bot = player });
-
 function updateBot(inChannel) {
-  console.log(inChannel);
   party = inChannel;
   bot = inChannel.players.find(p => bot.id === bot.id);
-  console.log('[Dummy] Bot connected to channel', inChannel.name);
+  console.log('[Dummy] Updated channel');
+
+  //HERE BOT CODE check party.currentStatus for UTLGame to know what to do
 }
 
+createPlayer('DUMMY_BOT', (player) => { bot = player });
 updateChannel((channel) => updateBot(channel));
 
 setTimeout(function(){
