@@ -54,7 +54,7 @@ if(args.length === 0) {
 
 function updateBot(inChannel) {
   party = inChannel;
-  bot = inChannel.players.find(p => bot.id === bot.id);
+  bot = inChannel.players.find(p => p.id === bot.id);
   console.log('[Dummy] Updated channel');
 
   //HERE BOT CODE check party.currentStatus for UTLGame to know what to do
