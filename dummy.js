@@ -18,5 +18,32 @@ function updateLobby(cb) {
   });
 }
 
+function gotoChannel(channelId) {
+  socket.emit('gotoChannel', channelId);
+}
+
+function startGame() {
+  socket.emit('nextRound');
+}
+
+function selectedAnswers(answers) {
+  socket.emit('selectedAnswers', answers);
+}
+
+function selectedJudgment(winnerId) {
+  socket.emit('selectedJudgment', winnerId);
+}
+
+function error(cb) {
+  addListener('err', errMsg => cb(errMsg));
+}
+
+function success(cb) {
+  addListener('success', successMsg => cb(successMsg));
+}
+
+
+// CODE HERE
+
 let bot;
 createPlayer('DUMMY_BOT', (player) => { bot = player });
