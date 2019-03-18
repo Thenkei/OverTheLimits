@@ -65,33 +65,39 @@ if(args.length === 0) {
 function updateBot(inChannel) {
   party = inChannel;
   bot = inChannel.players.find(p => p.id === bot.id);
-  console.log('[Dummy] Updated channel');
-  //HERE BOT CODE check party.currentStatus for UTLGame to know what to do
+
   switch(party.currentStatus)
   {
-    //
     case CHANNEL_STATUS.IDLE:
     break;
     case CHANNEL_STATUS.WAITING_GAME:
       sendMessage("Salut les mecs ! On commence la partie ?");
     break;
     case CHANNEL_STATUS.PLAYING_CARD:
-
-    console.log(bot.isGameMaster);
       if(!bot.isGameMaster)
       {
         if(bot.answers.length === 0)
         {
-          selectedAnswers(Math.floor((Math.random() * 10) + 1));
-          sendMessage("Ok pour moi");
+          selectedAnswer = Math.floor((Math.random() * 10));
+          console.log(bot.hand)
+          answer = [];
+          answer.push(bot.hand[selectedAnswer].id)
+          selectedAnswers(answer);
+          console.log("Selected hand : " + bot.hand[selectedAnswer].text);
+          sendMessage("Ok pour moi; j'ai selectionné la réponse " + selectedAnswer);
         }
       }
-      // Is the bot already played ?
     break;
     case CHANNEL_STATUS.JUDGING_CARD:
-    // Is the bot master ?
-    //sendMessage("Hé bah ... Vous êtes trash les mecs");
-
+      if(bot.isGameMaster)
+      {
+        if(bot.answers.length === 0)
+        {
+          selectedJudgment(party.players[0].id);
+          text = "Sympa cette réponse " + party.players[0].name + ";)"
+          sendMessage(text);
+        }
+      }
     break;
   }
 }
