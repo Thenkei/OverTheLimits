@@ -1,5 +1,5 @@
 const openSocket = require('socket.io-client');
-const socket = openSocket(`http://localhost:3000`, { path: '/api/socket.io' });
+const socket = openSocket(`http://underthelimits.underthemist.fr`, { path: '/api/socket.io' });
 
 const CHANNEL_STATUS = {
   IDLE: 'IDLE',
@@ -21,6 +21,12 @@ function createPlayer(playerName, cb) {
 
 function updateChannel(cb) {
   addListener('updateChannel', channelResponse => cb(channelResponse.channel));
+}
+
+function updateLobby(cb) {
+  addListener('updateLobby', (lobbyResponse) => {
+    cb(lobbyResponse.lobby);
+  });
 }
 
 function gotoChannel(channelId) {
@@ -57,10 +63,10 @@ let bot;
 let party;
 const args = process.argv.slice(2);
 
-if(args.length === 0) {
-  console.log('[Dummy] Give me the room id please');
-  return;
-}
+//if(args.length === 0) {
+//  console.log('[Dummy] Give me the room id please');
+//  return;
+//}
 
 function updateBot(inChannel) {
   party = inChannel;
@@ -102,9 +108,16 @@ function updateBot(inChannel) {
   }
 }
 
+function updateBotLobby(inLobby) {
+  console.log("lobby");
+  console.log(inLobby.channels);
+  gotoChannel(inLobby.channels[0].id);
+}
+
 createPlayer('DUMMY_BOT', (player) => { bot = player });
 updateChannel((channel) => updateBot(channel));
+updateLobby((lobby) => updateBotLobby(lobby));
 
-setTimeout(function(){
-    gotoChannel(parseInt(args[0]));
-}, 500);
+//setTimeout(function(){
+//    gotoChannel(parseInt(args[0]));
+//}, 500);
