@@ -75,7 +75,6 @@ function updateBot(inChannel) {
   switch(party.currentStatus)
   {
     case CHANNEL_STATUS.IDLE:
-    console.log('Connected');
     sendMessage("Salut les mecs ! On commence la partie ?");
     break;
 
@@ -116,15 +115,16 @@ function updateBot(inChannel) {
 }
 
 function updateBotLobby(inLobby) {
-  console.log("lobby");
-
   if(args.length > 0) {
     gotoChannel(parseInt(args[0]));
-  } else {
+  } else if(inLobby.channels.length > 0) {
     gotoChannel(inLobby.channels[0].id);
+  } else {
+    console.log("Bot cannot find any channel..");
   }
 }
 
-createPlayer('DUMMY_BOT', (player) => { bot = player });
+createPlayer('DUMMY_BOT', (player) => { bot = player; console.log('Connected'); });
 updateChannel((channel) => updateBot(channel));
 updateLobby((lobby) => updateBotLobby(lobby));
+console.log('Bot initialized');
