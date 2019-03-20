@@ -82,6 +82,8 @@ function updateBot(inChannel) {
   if (inChannel.players) {
     party = inChannel;
     bot = inChannel.players.find(p => p.id === bot.id);
+  }else {
+    return;
   }
 
   switch(party.currentStatus)
