@@ -6,6 +6,10 @@
   "repository": "https://github.com/Thenkei/OverTheLimits.git",
   "author": "Thenkei <morganperre@gmail.com>",
   "license": "GPL-3.0",
+  "scripts": {
+    "start:bot": "node dummy.js",
+    "start:nnt": "node neuralNetworkTest.js && fg"
+  },
   "dependencies": {
     "@tensorflow/tfjs-node": "^0.3.0",
     "socket.io-client": "^2.2.0",

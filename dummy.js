@@ -1,5 +1,5 @@
 const openSocket = require('socket.io-client');
-const socket = openSocket(`http://underthelimits.underthemist.fr`, { path: '/api/socket.io' });
+const socket = openSocket(`http://localhost:3000`, { path: '/api/socket.io' });
 
 const CHANNEL_STATUS = {
   IDLE: 'IDLE',
@@ -57,6 +57,16 @@ function sendMessage(msg) {
   socket.emit('chat/message', msg);
 }
 
+function makeid(length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < length; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
 // CODE HERE
 
 let bot;
@@ -75,49 +85,56 @@ function updateBot(inChannel) {
   switch(party.currentStatus)
   {
     case CHANNEL_STATUS.IDLE:
+    sendMessage("Salut les mecs ! On commence la partie ?");
     break;
+
     case CHANNEL_STATUS.WAITING_GAME:
-      sendMessage("Salut les mecs ! On commence la partie ?");
+    if(Math.floor((Math.random() * 5)) === 0) {
+      sendMessage("Prochaine question s.v.p !");
+    }
     break;
+
     case CHANNEL_STATUS.PLAYING_CARD:
-      if(!bot.isGameMaster)
-      {
-        if(bot.answers.length === 0)
-        {
-          selectedAnswer = Math.floor((Math.random() * 10));
-          console.log(bot.hand)
-          answer = [];
-          answer.push(selectedAnswer)
-          selectedAnswers(answer);
-          console.log("Selected hand : " + bot.hand[selectedAnswer].text);
-          sendMessage("Ok pour moi; j'ai selectionné la réponse " + selectedAnswer);
-        }
+    if (!bot.isGameMaster) {
+      if (bot.answers.length === 0) {
+        const answer = [];
+        const answers = [0,1,2,3,4,5,6,7,8,9];
+        const occurences = (party.deckQuestion.text.match(/______/g) || []);
+        occurences.forEach(() => {
+          selectedAnswer = answers.splice(Math.floor((Math.random() * answers.length)), 1);
+          answer.push(selectedAnswer[0])
+        })
+
+        selectedAnswers(answer);
+        sendMessage("Ok pour moi. :D");
       }
+    }
     break;
+
     case CHANNEL_STATUS.JUDGING_CARD:
-      if(bot.isGameMaster)
-      {
-        if(bot.answers.length === 0)
-        {
-          selectedJudgment(party.players[0].id);
-          text = "Sympa cette réponse " + party.players[0].name + ";)"
-          sendMessage(text);
-        }
+    if (bot.isGameMaster) {
+      if (bot.answers.length === 0) {
+
+        selectedJudgment(party.players[0].id);
+        text = "Sympa cette réponse " + party.players[0].name + " ;)"
+        sendMessage(text);
       }
+    }
     break;
   }
 }
 
 function updateBotLobby(inLobby) {
-  console.log("lobby");
-  console.log(inLobby.channels);
-  gotoChannel(inLobby.channels[0].id);
+  if(args.length > 0) {
+    gotoChannel(parseInt(args[0]));
+  } else if(inLobby.channels.length > 0) {
+    gotoChannel(inLobby.channels[0].id);
+  } else {
+    console.log("Bot cannot find any channel..");
+  }
 }
 
-createPlayer('DUMMY_BOT', (player) => { bot = player });
+createPlayer(`DUMMY_${makeid(5)}`, (player) => { bot = player; console.log('Connected'); });
 updateChannel((channel) => updateBot(channel));
 updateLobby((lobby) => updateBotLobby(lobby));
-
-//setTimeout(function(){
-//    gotoChannel(parseInt(args[0]));
-//}, 500);
+console.log('Bot initialized');
