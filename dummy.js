@@ -79,8 +79,10 @@ const args = process.argv.slice(2);
 //}
 
 function updateBot(inChannel) {
-  party = inChannel;
-  bot = inChannel.players.find(p => p.id === bot.id);
+  if (inChannel.players) {
+    party = inChannel;
+    bot = inChannel.players.find(p => p.id === bot.id);
+  }
 
   switch(party.currentStatus)
   {
