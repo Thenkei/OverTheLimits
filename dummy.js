@@ -57,6 +57,16 @@ function sendMessage(msg) {
   socket.emit('chat/message', msg);
 }
 
+function makeid(length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < length; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
 // CODE HERE
 
 let bot;
@@ -124,7 +134,7 @@ function updateBotLobby(inLobby) {
   }
 }
 
-createPlayer('DUMMY_BOT', (player) => { bot = player; console.log('Connected'); });
+createPlayer(`DUMMY_${makeid(5)}`, (player) => { bot = player; console.log('Connected'); });
 updateChannel((channel) => updateBot(channel));
 updateLobby((lobby) => updateBotLobby(lobby));
 console.log('Bot initialized');
