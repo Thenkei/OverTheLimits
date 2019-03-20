@@ -134,7 +134,7 @@ function updateBotLobby(inLobby) {
   }
 }
 
-createPlayer(`DUMMY_${makeid(5)}`, (player) => { bot = player; console.log('Connected'); });
+createPlayer(`DUMMY_${makeid(5)}`, (player) => { bot = player; console.log('Connected as', bot.name); });
 updateChannel((channel) => updateBot(channel));
 updateLobby((lobby) => updateBotLobby(lobby));
 console.log('Bot initialized');
