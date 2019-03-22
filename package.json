@@ -7,7 +7,7 @@
   "author": "Thenkei <morganperre@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "start:bot": "node dummy.js",
+    "start:bot": "node src/client/index.js",
     "start:nnt": "node neuralNetworkTest.js && fg"
   },
   "dependencies": {
