@@ -14,8 +14,12 @@ const CHANNEL_STATUS = {
 };
 
 function updateBot(inChannel) {
-  party = inChannel;
-  bot = inChannel.players.find(p => p.id === bot.id);
+  if (inChannel.players) {
+    party = inChannel;
+    bot = inChannel.players.find(p => p.id === bot.id);
+  } else {
+    return;
+  }
 
   switch(party.currentStatus)
   {

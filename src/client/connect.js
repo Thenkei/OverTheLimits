@@ -31,6 +31,6 @@ exports.newBot = function() {
   api.createPlayer(`DUMMY_${makeid(5)}`, (player) => { bot = player; console.log('Connected as', bot.name); })
 }
 
-exports.connectBot = function(args) {
-  api.updateLobby((lobby) => updateBotLobby(lobby, args))
+exports.connectBot = function() {
+  api.updateLobby((lobby) => updateBotLobby(lobby, process.argv.slice(2)))
 }
