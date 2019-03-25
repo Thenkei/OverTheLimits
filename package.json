@@ -4,7 +4,7 @@
   "description": "Neural network AI for UnderTheLimits",
   "main": "index.js",
   "repository": "https://github.com/Thenkei/OverTheLimits.git",
-  "author": "Thenkei <morganperre@gmail.com>",
+  "author": "Thenkei <morganperre@gmail.com>, Thendeo <alexislafont.43@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
     "start:bot": "node src/client/index.js",
