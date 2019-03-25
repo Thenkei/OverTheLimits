@@ -11,6 +11,7 @@ function updateBotLobby(inLobby, inArgs) {
   if(inArgs.length > 0) {
     api.gotoChannel(parseInt(inArgs[0]));
   } else if(inLobby.channels.length > 0) {
+    // TODO: try to connect channels until you can join one of them
     api.gotoChannel(inLobby.channels[0].id);
   } else {
     console.log("Bot cannot find any channel..");
@@ -28,9 +29,9 @@ function makeid(length) {
 }
 
 exports.newBot = function() {
-  api.createPlayer(`DUMMY_${makeid(5)}`, (player) => { bot = player; console.log('Connected as', bot.name); })
+  api.createPlayer(`DUMMY_${makeid(5)}`, (player) => { bot = player; console.log('Connected as', bot.name); });
 }
 
 exports.connectBot = function() {
-  api.updateLobby((lobby) => updateBotLobby(lobby, process.argv.slice(2)))
+  api.updateLobby((lobby) => updateBotLobby(lobby, process.argv.slice(2)));
 }
