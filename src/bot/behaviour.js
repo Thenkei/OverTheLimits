@@ -17,6 +17,7 @@ function updateBot(inChannel) {
   if (inChannel.players) {
     party = inChannel;
     bot = inChannel.players.find(p => p.id === bot.id);
+    isAdmin = bot.name === inChannel.admin.name;
   } else {
     return;
   }
@@ -24,12 +25,20 @@ function updateBot(inChannel) {
   switch(party.currentStatus)
   {
     case CHANNEL_STATUS.IDLE:
-    api.sendMessage("Salut les mecs ! On commence la partie ?");
+    if(isAdmin) {
+      api.startGame(); // StartGame
+    } else {
+      api.sendMessage("Salut les mecs ! On commence la partie ?");
+    }
     break;
 
     case CHANNEL_STATUS.WAITING_GAME:
-    if(Math.floor((Math.random() * 5)) === 0) {
-      api.sendMessage("Prochaine question s.v.p !");
+    if(isAdmin) {
+      api.startGame(); // NextRound
+    } else {
+      if(Math.floor((Math.random() * 5)) === 0) {
+        api.sendMessage("Prochaine question s.v.p !");
+      }
     }
     break;
 
@@ -53,10 +62,12 @@ function updateBot(inChannel) {
     case CHANNEL_STATUS.JUDGING_CARD:
     if (bot.isGameMaster) {
       if (bot.answers.length === 0) {
+        // Remove himsealf from the players list
+        party.players.splice( party.players.indexOf(bot), 1 );
 
-        api.selectedJudgment(party.players[0].id);
-        text = "Sympa cette réponse " + party.players[0].name + " ;)"
-        api.sendMessage(text);
+        const selectedWinner = party.players[ Math.floor((Math.random() * party.players.length)) ];
+        api.selectedJudgment(selectedWinner.id);
+        api.sendMessage(`Sympa cette réponse ${selectedWinner.name} ;)`);
       }
     }
     break;

@@ -13,8 +13,11 @@ function updateBotLobby(inLobby, inArgs) {
   } else if(inLobby.channels.length > 0) {
     // TODO: try to connect channels until you can join one of them
     api.gotoChannel(inLobby.channels[0].id);
-  } else {
-    console.log("Bot cannot find any channel..");
+  }else {
+    api.createChannel({
+      name: 'Test Channel',
+    });
+    console.log("Bot has created his own test channel..");
   }
 }
 
