@@ -32,6 +32,10 @@ module.exports = {
     });
   },
 
+  createChannel(channelName) {
+    socket.emit('createChannel', channelName);
+  },
+
   gotoChannel(channelId) {
     socket.emit('gotoChannel', channelId);
   },
