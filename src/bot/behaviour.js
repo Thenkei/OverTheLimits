@@ -13,6 +13,8 @@ const CHANNEL_STATUS = {
   JUDGING_CARD: 'JUDGING_CARD',
 };
 
+let lastStatus = CHANNEL_STATUS.IDLE;
+
 function updateBot(inChannel) {
   if (inChannel.players) {
     party = inChannel;
@@ -20,6 +22,11 @@ function updateBot(inChannel) {
     isAdmin = bot.name === inChannel.admin.name;
   } else {
     return;
+  }
+
+  // After a party disconnect bot
+  if(lastStatus !== CHANNEL_STATUS.IDLE && party.currentStatus === CHANNEL_STATUS.IDLE) {
+    api.disconnect();
   }
 
   switch(party.currentStatus)
@@ -72,6 +79,8 @@ function updateBot(inChannel) {
     }
     break;
   }
+
+  lastStatus = party.currentStatus;
 }
 
 exports.startBotBehaviour = function() {

@@ -62,5 +62,12 @@ module.exports = {
 
   sendMessage(msg) {
     socket.emit('chat/message', msg);
+  },
+
+  disconnect() {
+    if (socket.connected) {
+      socket.disconnect();
+    }
   }
+
 }
