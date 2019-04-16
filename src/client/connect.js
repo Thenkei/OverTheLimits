@@ -6,18 +6,27 @@
 
 api = require('./api')
 
+connected = false;
 
 function updateBotLobby(inLobby, inArgs) {
   if(inArgs.length > 0) {
-    api.gotoChannel(parseInt(inArgs[0]));
+    api.gotoChannel(inArgs[0]);
   } else if(inLobby.channels.length > 0) {
-    // TODO: try to connect channels until you can join one of them
-    api.gotoChannel(inLobby.channels[0].id);
-  }else {
+    let i = 0;
+    var observerInterval = setInterval(() => {
+        if(connected || i === inLobby.channels.length) {
+          clearInterval(observerInterval);
+          return;
+        }
+        connected = true;
+        api.gotoChannel(inLobby.channels[i].id);
+        i++;
+    }, 500);
+  } else {
     api.createChannel({
       opts: {
         gameType: 'utlgame',
-        channelName: 'Test Channel',
+        channelName: `Test Channel_${makeid(3)}`,
         minPlayersCount: 2,
         maxPlayersCount: 3,
         maxPoints: 3,
@@ -43,5 +52,6 @@ exports.newBot = function() {
 }
 
 exports.connectBot = function() {
+  api.error((e) => connected = false);
   api.updateLobby((lobby) => updateBotLobby(lobby, process.argv.slice(2)));
 }
