@@ -15,7 +15,14 @@ function updateBotLobby(inLobby, inArgs) {
     api.gotoChannel(inLobby.channels[0].id);
   }else {
     api.createChannel({
-      name: 'Test Channel',
+      opts: {
+        gameType: 'utlgame',
+        channelName: 'Test Channel',
+        minPlayersCount: 2,
+        maxPlayersCount: 3,
+        maxPoints: 3,
+        isPrivate: false,
+      },
     });
     console.log("Bot has created his own test channel..");
   }
