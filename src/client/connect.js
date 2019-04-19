@@ -6,36 +6,52 @@
 
 api = require('./api')
 
+canConnect = true;
 connected = false;
+lobby = {};
 
-function updateBotLobby(inLobby, inArgs) {
-  if(inArgs.length > 0) {
-    api.gotoChannel(inArgs[0]);
-  } else if(inLobby.channels.length > 0) {
-    let i = 0;
-    var observerInterval = setInterval(() => {
-        if(connected || i === inLobby.channels.length) {
-          clearInterval(observerInterval);
-          return;
-        }
-        connected = true;
-        api.gotoChannel(inLobby.channels[i].id);
-        i++;
-    }, 500);
-  } else {
-    api.createChannel({
-      opts: {
-        gameType: 'utlgame',
-        channelName: `Test Channel_${makeid(3)}`,
-        minPlayersCount: 2,
-        maxPlayersCount: 3,
-        maxPoints: 3,
-        isPrivate: false,
-      },
-    });
-    console.log("Bot has created his own test channel..");
+function updateBotLobby(inLobby) {
+  lobby = inLobby;
+
+  if(canConnect && lobby.channels) {
+    connectBotToChannel();
   }
 }
+
+function connectBotToChannel() {
+  if( connected ) { return; }
+
+  canConnect = false;
+
+  var observerInterval = setInterval(() => {
+      if(connected) {
+        clearInterval(observerInterval);
+        console.log("-> ", bot.name, " join channel ", channel.name);
+        return;
+      } else if(lobby.channels.length === 0) {
+        clearInterval(observerInterval);
+
+        api.createChannel({
+          opts: {
+            gameType: 'utlgame',
+            channelName: `Test Channel_${makeid(3)}`,
+            minPlayersCount: 2,
+            maxPlayersCount: 3,
+            maxPoints: 3,
+            isPrivate: false,
+          },
+        });
+        connected = true;
+        console.log("-> ", bot.name, " has created his own test channel");
+        return;
+      }
+
+      connected = true;
+      channel = lobby.channels.pop();
+      api.gotoChannel(channel.id);
+  }, 500);
+}
+
 
 function makeid(length) {
   var text = "";
@@ -52,6 +68,11 @@ exports.newBot = function() {
 }
 
 exports.connectBot = function() {
-  api.error((e) => connected = false);
-  api.updateLobby((lobby) => updateBotLobby(lobby, process.argv.slice(2)));
+  api.error((e) => connected = false); // WORST THING EVER
+  api.updateLobby((lobby) => updateBotLobby(lobby));
+
+  //if(process.argv.slice(2).length > 0) {
+  //  api.gotoChannel(process.argv.slice(2)[0]);
+  //  connected = true;
+  //}
 }
