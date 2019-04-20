@@ -14,5 +14,3 @@ let party;
 connect.newBot();
 behaviour.startBotBehaviour();
 connect.connectBot();
-
-console.log('Bot initialized..');

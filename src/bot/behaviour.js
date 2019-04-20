@@ -27,6 +27,8 @@ function updateBot(inChannel) {
   // After a party disconnect bot
   if(lastStatus !== CHANNEL_STATUS.IDLE && party.currentStatus === CHANNEL_STATUS.IDLE) {
     api.disconnect();
+    console.log("Disconnect ", bot.name);
+    return;
   }
 
   switch(party.currentStatus)
